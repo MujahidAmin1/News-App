@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/features/articles/controller/news_controller.dart';
+import 'package:news_app/features/articles/model/article.dart';
+import 'package:news_app/features/articles/view/news_detail_screen.dart';
+import 'package:news_app/features/articles/widgets/article_grid_card.dart';
+import 'package:news_app/features/articles/widgets/featured_article_card.dart';
+import 'package:news_app/features/articles/widgets/news_category_nav_bar.dart';
+import 'package:news_app/features/articles/widgets/news_top_header.dart';
 import 'package:news_app/utils/categories.dart';
 
-class HomePage extends ConsumerWidget {
-  const HomePage({super.key});
+class NewsPage extends ConsumerWidget {
+  const NewsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -12,84 +18,197 @@ class HomePage extends ConsumerWidget {
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Top Headlines')),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 56,
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final category = categories[index];
-
-                return ChoiceChip(
-                  label: Text(category),
-                  selected: category == selectedCategory,
-                  onSelected: (_) {
-                    ref
-                        .read(newsControllerProvider.notifier)
-                        .changeCategory(category);
-                  },
-                );
-              },
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
-              itemCount: categories.length,
+      backgroundColor: const Color(0xFF0B0F16),
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: ref.read(newsControllerProvider.notifier).refresh,
+          child: newsState.when(
+             data: (newsResponse) => _NewsContent(
+              selectedCategory: selectedCategory,
+              newsResponse: newsResponse,
+              onSelectCategory: (category) => ref
+                  .read(newsControllerProvider.notifier)
+                  .changeCategory(category),
             ),
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: ref.read(newsControllerProvider.notifier).refresh,
-              child: newsState.when(
-                loading: () => ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: const Center(child: CircularProgressIndicator()),
-                    ),
-                  ],
-                ),
-                error: (error, _) => ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: Center(child: Text('Error: $error')),
-                    ),
-                  ],
-                ),
-                data: (newsResponse) {
-                  if (newsResponse.articles.isEmpty) {
-                    return ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      children: const [
-                        SizedBox(
-                          height: 240,
-                          child: Center(child: Text('No data available')),
-                        ),
-                      ],
-                    );
-                  }
-
-                  return ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: newsResponse.articles.length,
-                    itemBuilder: (context, index) {
-                      final article = newsResponse.articles[index];
-                      return ListTile(
-                        leading: Text('${index + 1}'),
-                        title: Text(article.title),
-                        subtitle: Text(article.description),
-                      );
-                    },
-                  );
-                },
-              ),
+            loading: () => _LoadingState(selectedCategory: selectedCategory),
+            error: (error, _) => _ErrorState(
+              message: error.toString(),
+              onRetry: () => ref.invalidate(newsControllerProvider),
             ),
+           
           ),
-        ],
+        ),
       ),
     );
   }
+}
+
+class _NewsContent extends StatelessWidget {
+  const _NewsContent({
+    required this.selectedCategory,
+    required this.newsResponse,
+    required this.onSelectCategory,
+  });
+
+  final String selectedCategory;
+  final NewsResponse newsResponse;
+  final ValueChanged<String> onSelectCategory;
+
+  @override
+  Widget build(BuildContext context) {
+    final articles = newsResponse.articles;
+    final hasArticles = articles.isNotEmpty;
+    final featuredArticle = hasArticles ? articles.first : null;
+    final gridArticles = hasArticles ? articles.skip(1).toList() : <Article>[];
+
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 18),
+      children: [
+        const NewsTopHeader(),
+        const SizedBox(height: 12),
+        NewsCategoryNavBar(
+          categories: categories,
+          selectedCategory: selectedCategory,
+          onSelectCategory: onSelectCategory,
+        ),
+        const SizedBox(height: 14),
+        const Text(
+          'SECTION',
+          style: TextStyle(
+            color: Color(0xFFFF3A4B),
+            letterSpacing: 1.0,
+            fontWeight: FontWeight.w700,
+            fontSize: 12,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          _displayCategoryName(selectedCategory),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 42,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 12),
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (_){
+              return NewsDetailScreen(article: featuredArticle);
+            }));
+          },
+          child: FeaturedArticleCard(article: featuredArticle!)
+          ),
+        const SizedBox(height: 14),
+        if (gridArticles.isNotEmpty)
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: gridArticles.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 0.64,
+            ),
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => NewsDetailScreen(article: gridArticles[index])));
+                },
+                child: ArticleGridCard(article: gridArticles[index]),
+                );
+            },
+          ),
+      ],
+    );
+  }
+}
+
+class _LoadingState extends StatelessWidget {
+  const _LoadingState({required this.selectedCategory});
+
+  final String selectedCategory;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 18),
+      children: [
+        const NewsTopHeader(),
+        const SizedBox(height: 12),
+        NewsCategoryNavBar(
+          categories: categories,
+          selectedCategory: selectedCategory,
+          onSelectCategory: (_) {},
+        ),
+        const SizedBox(height: 80),
+        const Center(child: CircularProgressIndicator()),
+      ],
+    );
+  }
+}
+
+class _ErrorState extends StatelessWidget {
+  const _ErrorState({
+    required this.message,
+    required this.onRetry,
+  });
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(18, 16, 18, 20),
+      children: [
+        const NewsTopHeader(),
+        const SizedBox(height: 48),
+        const Icon(
+          Icons.wifi_off_rounded,
+          color: Color(0xFF6F7A8F),
+          size: 44,
+        ),
+        const SizedBox(height: 12),
+        const Text(
+          'Unable to load stories',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          message,
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Color(0xFF93A0B6)),
+        ),
+        const SizedBox(height: 16),
+        Center(
+          child: FilledButton(
+            onPressed: onRetry,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFFF3A4B),
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Try Again'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+String _displayCategoryName(String category) {
+  if (category.isEmpty) {
+    return 'Headlines';
+  }
+
+  return category[0].toUpperCase() + category.substring(1).toLowerCase();
 }

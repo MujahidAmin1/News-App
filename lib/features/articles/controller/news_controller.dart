@@ -1,15 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:news_app/features/articles/model/article.dart';
 import 'package:news_app/features/articles/services/news_service.dart';
 import 'package:news_app/utils/categories.dart';
-import 'package:flutter_riverpod/legacy.dart';
-
 
 final selectedCategoryProvider = StateProvider<String>((ref) {
   return categories.first;
 });
 
-final newsControllerProvider = AsyncNotifierProvider<NewsController, NewsResponse>(NewsController.new);
+final newsControllerProvider =
+    AsyncNotifierProvider<NewsController, NewsResponse>(NewsController.new);
 
 class NewsController extends AsyncNotifier<NewsResponse> {
   @override
