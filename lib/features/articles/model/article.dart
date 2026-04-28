@@ -1,3 +1,8 @@
+import 'package:hive_ce/hive_ce.dart';
+
+part 'article.g.dart';
+
+
 class NewsResponse {
   final int totalResults;
   final List<Article> articles;
@@ -16,13 +21,21 @@ class NewsResponse {
   }
 }
 
-class Article {
+@HiveType(typeId: 0)
+class Article extends HiveObject{
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String title;
+  @HiveField(2)
   final String description;
+  @HiveField(3)
   final String image;
+  @HiveField(4)
   final DateTime publishedAt;
+  @HiveField(5)
   final Source source;
+  @HiveField(6)
   final String url;
 
   Article({
@@ -60,19 +73,16 @@ class Article {
 class Source {
   final String id;
   final String name;
-  final String url;
 
   Source({
     required this.id,
     required this.name,
-    required this.url,
   });
 
   factory Source.fromJson(Map<String, dynamic> json) {
     return Source(
       id: _toSafeString(json['id']),
       name: _toSafeString(json['name'], fallback: 'Unknown source'),
-      url: _toSafeString(json['url']),
     );
   }
 }

@@ -55,8 +55,6 @@ class NewsService {
         'https://newsapi.org/v2/everything',
         queryParameters: {
           'q': query,
-          'from': '2025-04-27',
-          'to': '2026-04-27',
           'apiKey': apiKey,
         },
       );
