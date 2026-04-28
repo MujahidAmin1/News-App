@@ -1,13 +1,13 @@
-<svg width="32" height="34" viewBox="0 0 32 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_4_649)">
-<path d="M18.0001 20H14.6667" stroke="#FCFCFC" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M20.0001 17.3334H14.6667" stroke="#FCFCFC" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M10.6666 22.6667H21.3333C21.6869 22.6667 22.026 22.5262 22.2761 22.2762C22.5261 22.0261 22.6666 21.687 22.6666 21.3334V10.6667C22.6666 10.3131 22.5261 9.97395 22.2761 9.7239C22.026 9.47385 21.6869 9.33337 21.3333 9.33337H13.3333C12.9796 9.33337 12.6405 9.47385 12.3904 9.7239C12.1404 9.97395 11.9999 10.3131 11.9999 10.6667V21.3334C11.9999 21.687 11.8594 22.0261 11.6094 22.2762C11.3593 22.5262 11.0202 22.6667 10.6666 22.6667ZM10.6666 22.6667C10.313 22.6667 9.97382 22.5262 9.72378 22.2762C9.47373 22.0261 9.33325 21.687 9.33325 21.3334V15.3334C9.33325 14.9798 9.47373 14.6406 9.72378 14.3906C9.97382 14.1405 10.313 14 10.6666 14H11.9999" stroke="#FCFCFC" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M19.3334 12H15.3334C14.9652 12 14.6667 12.2985 14.6667 12.6667V14C14.6667 14.3682 14.9652 14.6667 15.3334 14.6667H19.3334C19.7016 14.6667 20.0001 14.3682 20.0001 14V12.6667C20.0001 12.2985 19.7016 12 19.3334 12Z" stroke="#FCFCFC" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_feeds)">
+<path d="M15 18H10" stroke="#9498A2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 14H10" stroke="#9498A2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4 22H20C20.5304 22 21.0391 21.7893 21.4142 21.4142C21.7893 21.0391 22 20.5304 22 20V4C22 3.46957 21.7893 2.96086 21.4142 2.58579C21.0391 2.21071 20.5304 2 20 2H8C7.46957 2 6.96086 2.21071 6.58579 2.58579C6.21071 2.96086 6 3.46957 6 4V20C6 20.5304 5.78929 21.0391 5.41421 21.4142C5.03914 21.7893 4.53043 22 4 22ZM4 22C3.46957 22 2.96086 21.7893 2.58579 21.4142C2.21071 21.0391 2 20.5304 2 20V11C2 10.4696 2.21071 9.96086 2.58579 9.58579C2.96086 9.21071 3.46957 9 4 9H6" stroke="#9498A2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17 6H11C10.4477 6 10 6.44772 10 7V9C10 9.55228 10.4477 10 11 10H17C17.5523 10 18 9.55228 18 9V7C18 6.44772 17.5523 6 17 6Z" stroke="#9498A2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 <defs>
-<clipPath id="clip0_4_649">
-<rect width="16" height="16" fill="white" transform="translate(8 8)"/>
+<clipPath id="clip0_feeds">
+<rect width="24" height="24" fill="white"/>
 </clipPath>
 </defs>
 </svg>
