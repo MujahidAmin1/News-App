@@ -1,0 +1,11 @@
+create a local repo to handle saving and fetchng, offl news
+asyncnotifier build should try to fetch data within controller
+the method should set State = AsyncLoading()
+
+check if theres data in local repo
+    set state = asyncvalue.data( the value)
+    then attempt to fetch data from service then set state = asyncvalue.data(frm server)
+
+else 
+    attempt to fetch data from service then set state = asyncvalue.data(frm server)
+    localrepo.saveData(freshData)

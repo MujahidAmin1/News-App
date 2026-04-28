@@ -11,6 +11,7 @@ final searchControllerProvider =
     AsyncNotifierProvider.autoDispose<SearchController, List<Article>>(SearchController.new);
 
 class SearchController extends AsyncNotifier<List<Article>> {
+  final Map<String, Future<List<Article>>> _inFlight = {};
 
   @override
   Future<List<Article>> build() async => const [];
@@ -26,7 +27,7 @@ class SearchController extends AsyncNotifier<List<Article>> {
 
     state = const AsyncLoading();
     try {
-      final articles = await _fetch(trimmed);
+      final articles = await _fetchOnce(trimmed);
       state = AsyncData(articles);
     } catch (e, st) {
       log('Search failed for "$trimmed": $e', stackTrace: st);
@@ -37,6 +38,17 @@ class SearchController extends AsyncNotifier<List<Article>> {
   void clear() {
     ref.read(searchSubmittedQueryProvider.notifier).state = null;
     state = const AsyncData([]);
+  }
+
+  Future<List<Article>> _fetchOnce(String query) {
+    final existing = _inFlight[query];
+    if (existing != null) {
+      return existing;
+    }
+    final future = _fetch(query);
+    _inFlight[query] = future;
+    future.whenComplete(() => _inFlight.remove(query));
+    return future;
   }
 
   Future<List<Article>> _fetch(String query) async {

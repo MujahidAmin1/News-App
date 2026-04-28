@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/features/articles/model/article.dart';
+import 'package:news_app/features/bookmarks/controller/bookmark_controller.dart';
 import 'package:news_app/utils/article_time_ago.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class NewsDetailScreen extends StatelessWidget {
+class NewsDetailScreen extends ConsumerWidget {
   final Article article;
   const NewsDetailScreen({super.key, required this.article});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bookmarksAsync = ref.watch(bookmarksControllerProvider);
+    final bookmarksCtrl = ref.read(bookmarksControllerProvider.notifier);
+    final bookmarked = bookmarksAsync.value ?? const <Article>[];
+    bool isBookmarked() {
+      return bookmarked.any((a) => a.url == article.url || a.id == article.id) ||
+          bookmarksCtrl.isBookmarked(article);
+    }
+
+    void toggleBookmark() {
+      if (isBookmarked()) {
+        bookmarksCtrl.removeBookmark(article);
+      } else {
+        bookmarksCtrl.addBookmark(article);
+      }
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF0B0F16),
       appBar: AppBar(
@@ -19,12 +36,7 @@ class NewsDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.bookmark_border, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
+       
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -146,7 +158,7 @@ class NewsDetailScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      onPressed: () {},
+                      onPressed: toggleBookmark,
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.white,
                         side: const BorderSide(color: Colors.grey),
@@ -155,10 +167,13 @@ class NewsDetailScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      icon: const Icon(Icons.bookmark_border, size: 18),
-                      label: const Text(
-                        'SAVE',
-                        style: TextStyle(
+                      icon: Icon(
+                        isBookmarked() ? Icons.bookmark : Icons.bookmark_border,
+                        size: 18,
+                      ),
+                      label: Text(
+                        isBookmarked() ? 'SAVED' : 'SAVE',
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1,

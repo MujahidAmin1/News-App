@@ -7,6 +7,7 @@ import 'package:news_app/features/articles/widgets/article_grid_card.dart';
 import 'package:news_app/features/articles/widgets/featured_article_card.dart';
 import 'package:news_app/features/articles/widgets/news_category_nav_bar.dart';
 import 'package:news_app/features/articles/widgets/news_top_header.dart';
+import 'package:news_app/features/bookmarks/controller/bookmark_controller.dart';
 import 'package:news_app/utils/categories.dart';
 
 class NewsPage extends ConsumerWidget {
@@ -43,7 +44,7 @@ class NewsPage extends ConsumerWidget {
   }
 }
 
-class _NewsContent extends StatelessWidget {
+class _NewsContent extends ConsumerWidget {
   const _NewsContent({
     required this.selectedCategory,
     required this.newsResponse,
@@ -55,11 +56,18 @@ class _NewsContent extends StatelessWidget {
   final ValueChanged<String> onSelectCategory;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final articles = newsResponse.articles;
     final hasArticles = articles.isNotEmpty;
     final featuredArticle = hasArticles ? articles.first : null;
     final gridArticles = hasArticles ? articles.skip(1).toList() : <Article>[];
+    final bookmarksAsync = ref.watch(bookmarksControllerProvider);
+    final bookmarksCtrl = ref.read(bookmarksControllerProvider.notifier);
+    final bookmarked = bookmarksAsync.value ?? const <Article>[];
+    bool isBookmarked(Article article) {
+      return bookmarked.any((a) => a.url == article.url || a.id == article.id) ||
+          bookmarksCtrl.isBookmarked(article);
+    }
 
     return ListView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -92,13 +100,21 @@ class _NewsContent extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (_){
-              return NewsDetailScreen(article: featuredArticle);
-            }));
-          },
-          child: FeaturedArticleCard(article: featuredArticle!)
+        if (featuredArticle != null)
+          FeaturedArticleCard(
+            article: featuredArticle,
+            isBookmarked: isBookmarked(featuredArticle),
+            onToggleBookmark: () {
+              if (isBookmarked(featuredArticle)) {
+                bookmarksCtrl.removeBookmark(featuredArticle);
+              } else {
+                bookmarksCtrl.addBookmark(featuredArticle);
+              }
+            },
+            onOpen: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => NewsDetailScreen(article: featuredArticle)),
+            ),
           ),
         const SizedBox(height: 14),
         if (gridArticles.isNotEmpty)
@@ -113,12 +129,22 @@ class _NewsContent extends StatelessWidget {
               childAspectRatio: 0.64,
             ),
             itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => NewsDetailScreen(article: gridArticles[index])));
+              final article = gridArticles[index];
+              return ArticleGridCard(
+                article: article,
+                isBookmarked: isBookmarked(article),
+                onToggleBookmark: () {
+                  if (isBookmarked(article)) {
+                    bookmarksCtrl.removeBookmark(article);
+                  } else {
+                    bookmarksCtrl.addBookmark(article);
+                  }
                 },
-                child: ArticleGridCard(article: gridArticles[index]),
-                );
+                onOpen: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => NewsDetailScreen(article: article)),
+                ),
+              );
             },
           ),
       ],
