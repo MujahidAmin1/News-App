@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/features/articles/view/news_page.dart';
+import 'package:news_app/features/btm_navbar/btm_navbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,9 +18,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0F1724)),
+        scaffoldBackgroundColor: const Color(0xFF0B0F16),
+        useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: BtmNavbar(),
     );
   }
 }
