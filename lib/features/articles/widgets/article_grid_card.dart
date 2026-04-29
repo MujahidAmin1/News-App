@@ -83,6 +83,7 @@ class ArticleGridCard extends StatelessWidget {
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
+                        fontFamily: 'Georgia',
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.w600,

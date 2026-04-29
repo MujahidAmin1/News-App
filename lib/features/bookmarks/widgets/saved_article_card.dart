@@ -96,6 +96,7 @@ class SavedArticleCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
+                      fontFamily: 'Georgia',
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: 20,

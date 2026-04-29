@@ -62,6 +62,7 @@ class FeaturedArticleCard extends StatelessWidget {
                     child: const Text(
                       'FEATURED',
                       style: TextStyle(
+                        fontFamily: 'Jetbrains Mono',
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
@@ -102,6 +103,7 @@ class FeaturedArticleCard extends StatelessWidget {
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
+                          fontFamily: 'Georgia',
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
                           fontSize: 24,

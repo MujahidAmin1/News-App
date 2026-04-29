@@ -86,6 +86,7 @@ class _NewsContent extends ConsumerWidget {
         const Text(
           'SECTION',
           style: TextStyle(
+            fontFamily: 'Jetbrains Mono',
             color: Color(0xFFFF3A4B),
             letterSpacing: 1.0,
             fontWeight: FontWeight.w700,
@@ -96,8 +97,9 @@ class _NewsContent extends ConsumerWidget {
         Text(
           _displayCategoryName(selectedCategory),
           style: const TextStyle(
+            fontFamily: "Georgia",
             color: Colors.white,
-            fontSize: 42,
+            fontSize: 30,
             fontWeight: FontWeight.w700,
           ),
         ),
