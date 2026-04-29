@@ -31,7 +31,7 @@ class UnderlineNavigationBar extends StatelessWidget {
     this.indicatorColor = const Color(0xFFFF2D2D),
     this.indicatorHeight = 3,
     this.indicatorWidthFactor = 0.8,
-    this.animationDuration = const Duration(milliseconds: 250),
+    this.animationDuration = const Duration(milliseconds: 500),
     this.maintainBottomViewPadding = false,
   })  : assert(destinations.length >= 2),
         assert(0 <= selectedIndex && selectedIndex < destinations.length),

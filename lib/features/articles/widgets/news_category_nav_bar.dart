@@ -30,7 +30,7 @@ class NewsCategoryNavBar extends StatelessWidget {
           return InkWell(
             onTap: () => onSelectCategory(category),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
+              duration: const Duration(milliseconds: 1000),
               padding: const EdgeInsets.symmetric(horizontal: 8),
               alignment: Alignment.center,
               decoration: BoxDecoration(
