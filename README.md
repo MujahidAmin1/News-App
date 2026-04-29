@@ -11,6 +11,25 @@ A modern, high-performance Flutter news application that provides real-time head
 - **Detailed Article View**: Read article summaries and access the full story via an external browser link.
 - **Pull-to-Refresh**: Easily update the news feed with the latest content.
 
+## Folder Structure
+
+```text
+lib/
+├── features/
+│   ├── articles/          # News feed and article details
+│   │   ├── controller/    # Riverpod providers and logic
+│   │   ├── model/         # Article and Source models
+│   │   ├── services/      # API and Caching services
+│   │   ├── view/          # Main news pages
+│   │   └── widgets/       # Reusable article components
+│   ├── bookmarks/         # Saved articles feature
+│   ├── btm_navbar/        # Bottom navigation implementation
+│   └── search/            # Article search functionality
+├── utils/                 # Helpers and custom route transitions
+├── main.dart              # App entry point
+└── hive_registrar.g.dart  # Generated Hive adapters
+```
+
 ## Animation Highlights
 
 The app features smooth, subtle animations to enhance the user experience:
