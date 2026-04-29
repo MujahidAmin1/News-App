@@ -110,10 +110,13 @@ class NewsDetailScreen extends ConsumerWidget {
             ),
             ClipRRect(
               borderRadius: BorderRadius.circular(0),
-              child: Image.network(
-                article.image,
-                width: double.infinity,
-                height: 250,
+              child: Hero(
+                tag: article.url,
+                child: Image.network(
+                  article.image,
+                  width: double.infinity,
+                  height: 250,
+                ),
               ),
             ),
             const SizedBox(height: 24),

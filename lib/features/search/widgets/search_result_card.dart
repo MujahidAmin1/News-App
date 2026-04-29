@@ -32,10 +32,13 @@ class SearchResultCard extends StatelessWidget {
           children: [
             Stack(
               children: [
-                NewsNetworkImage(
-                  imageUrl: article.image,
-                  height: 220,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                Hero(
+                  tag: article.url,
+                  child: NewsNetworkImage(
+                    imageUrl: article.image,
+                    height: 220,
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                  ),
                 ),
                 Positioned.fill(
                   child: DecoratedBox(

@@ -1,6 +1,6 @@
 {
-     "name": "Weather App",
-     "short_name": "Weather App",
+     "name": "News App",
+     "short_name": "News App",
      "start_url": ".",
      "display": "standalone",
      "background_color": "#0175C2",

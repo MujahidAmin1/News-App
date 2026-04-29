@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/features/articles/controller/news_controller.dart';
 import 'package:news_app/features/articles/model/article.dart';
 import 'package:news_app/features/articles/view/news_detail_screen.dart';
+import 'package:news_app/features/articles/widgets/animated_news_item.dart';
 import 'package:news_app/features/articles/widgets/article_grid_card.dart';
 import 'package:news_app/features/articles/widgets/featured_article_card.dart';
 import 'package:news_app/features/articles/widgets/news_category_nav_bar.dart';
 import 'package:news_app/features/articles/widgets/news_top_header.dart';
 import 'package:news_app/features/bookmarks/controller/bookmark_controller.dart';
 import 'package:news_app/utils/categories.dart';
+import 'package:news_app/utils/route_transitions.dart';
 
 class NewsPage extends ConsumerWidget {
   const NewsPage({super.key});
@@ -101,19 +103,22 @@ class _NewsContent extends ConsumerWidget {
         ),
         const SizedBox(height: 12),
         if (featuredArticle != null)
-          FeaturedArticleCard(
-            article: featuredArticle,
-            isBookmarked: isBookmarked(featuredArticle),
-            onToggleBookmark: () {
-              if (isBookmarked(featuredArticle)) {
-                bookmarksCtrl.removeBookmark(featuredArticle);
-              } else {
-                bookmarksCtrl.addBookmark(featuredArticle);
-              }
-            },
-            onOpen: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => NewsDetailScreen(article: featuredArticle)),
+          AnimatedNewsItem(
+            index: 0,
+            child: FeaturedArticleCard(
+              article: featuredArticle,
+              isBookmarked: isBookmarked(featuredArticle),
+              onToggleBookmark: () {
+                if (isBookmarked(featuredArticle)) {
+                  bookmarksCtrl.removeBookmark(featuredArticle);
+                } else {
+                  bookmarksCtrl.addBookmark(featuredArticle);
+                }
+              },
+              onOpen: () => Navigator.push(
+                context,
+                FadeSlidePageRoute(page: NewsDetailScreen(article: featuredArticle)),
+              ),
             ),
           ),
         const SizedBox(height: 14),
@@ -130,19 +135,22 @@ class _NewsContent extends ConsumerWidget {
             ),
             itemBuilder: (context, index) {
               final article = gridArticles[index];
-              return ArticleGridCard(
-                article: article,
-                isBookmarked: isBookmarked(article),
-                onToggleBookmark: () {
-                  if (isBookmarked(article)) {
-                    bookmarksCtrl.removeBookmark(article);
-                  } else {
-                    bookmarksCtrl.addBookmark(article);
-                  }
-                },
-                onOpen: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => NewsDetailScreen(article: article)),
+              return AnimatedNewsItem(
+                index: index + 1,
+                child: ArticleGridCard(
+                  article: article,
+                  isBookmarked: isBookmarked(article),
+                  onToggleBookmark: () {
+                    if (isBookmarked(article)) {
+                      bookmarksCtrl.removeBookmark(article);
+                    } else {
+                      bookmarksCtrl.addBookmark(article);
+                    }
+                  },
+                  onOpen: () => Navigator.push(
+                    context,
+                    FadeSlidePageRoute(page: NewsDetailScreen(article: article)),
+                  ),
                 ),
               );
             },
@@ -210,12 +218,6 @@ class _ErrorState extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Text(
-          message,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Color(0xFF93A0B6)),
-        ),
-        const SizedBox(height: 16),
         Center(
           child: FilledButton(
             onPressed: onRetry,
