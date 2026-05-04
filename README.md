@@ -1,82 +1,104 @@
-# News App
+# Newsroom Live Wire
 
-A modern, high-performance Flutter news application that provides real-time headlines and category-based news with a premium dark-themed UI.
-
-## Features and Functionality
-
-- **Top Headlines**: Stay updated with the latest news from across the globe.
-- **Category Navigation**: Filter news by categories such as Business, Technology, Science, Sports, Health, Entertainment, and General.
-- **Global Search**: Find specific articles using the built-in search functionality.
-- **Local Bookmarks**: Save your favorite articles for offline access using Hive local storage.
-- **Detailed Article View**: Read article summaries and access the full story via an external browser link.
-- **Pull-to-Refresh**: Easily update the news feed with the latest content.
-
-## Folder Structure
-
-```text
-lib/
-├── features/
-│   ├── articles/          # News feed and article details
-│   │   ├── controller/    # Riverpod providers and logic
-│   │   ├── model/         # Article and Source models
-│   │   ├── services/      # API and Caching services
-│   │   ├── view/          # Main news pages
-│   │   └── widgets/       # Reusable article components
-│   ├── bookmarks/         # Saved articles feature
-│   ├── btm_navbar/        # Bottom navigation implementation
-│   └── search/            # Article search functionality
-├── utils/                 # Helpers and custom route transitions
-├── main.dart              # App entry point
-└── hive_registrar.g.dart  # Generated Hive adapters
-```
-
-## Animation Highlights
-
-The app features smooth, subtle animations to enhance the user experience:
-- **Staggered Entrance**: News feed items fade in and slide up from 20px below with a sequential delay (50ms per item), creating a professional "unfolding" effect.
-- **Custom Page Transition**: Navigating to article details uses a custom `FadeSlidePageRoute` that combines a fade-in effect with a slight upward slide (300ms duration), providing a smoother feel than standard OS transitions.
-- **Hero Transitions**: Images transition seamlessly between the grid view and the detail screen.
-
-## Screenshots / Screen Recordings
-
-| News Feed | Article Details | Bookmarks |
-| :---: | :---: | :---: |
-| ![News Feed Placeholder](https://via.placeholder.com/300x600?text=News+Feed) | ![Details Placeholder](https://via.placeholder.com/300x600?text=Article+Details) | ![Bookmarks Placeholder](https://via.placeholder.com/300x600?text=Bookmarks) |
-
-> [!TIP]
-> Add your own screenshots or GIFs here to showcase the app's UI and animations!
-
-## APIs Used
-
-This app is powered by the **[NewsAPI.org](https://newsapi.org/)** API.
-- **Top Headlines Endpoint**: Used for the main feed and category filtering.
-- **Everything Endpoint**: Used for the search functionality.
-
-## Architecture and Dependencies
-
-### Architecture
-The app follows a **Feature-first Architecture** combined with the **Controller-Model-View** pattern using Riverpod:
-- **Features**: Code is organized by feature (articles, bookmarks, search) for better scalability.
-- **State Management**: [Riverpod](https://riverpod.dev/) handles asynchronous data fetching, category switching, and bookmark state.
-- **Local Persistence**: [Hive](https://docs.hivedb.dev/) is used for fast, efficient local storage of bookmarked articles.
-
-### Core Dependencies
-- **[flutter_riverpod](https://pub.dev/packages/flutter_riverpod)**: Robust state management.
-- **[dio](https://pub.dev/packages/dio)**: Powerful HTTP client for API requests.
-- **[hive_ce](https://pub.dev/packages/hive_ce)**: Lightweight and fast NoSQL database for bookmarks.
-- **[flutter_dotenv](https://pub.dev/packages/flutter_dotenv)**: Secure management of API keys.
-- **[url_launcher](https://pub.dev/packages/url_launcher)**: External link handling for full articles.
-- **[intl](https://pub.dev/packages/intl)**: Sophisticated date and time formatting.
+A premium, high-performance news application built with Flutter that delivers real-time global headlines with a sophisticated dark-themed interface. Designed for seamless performance across Mobile, Tablet, and Desktop platforms.
 
 ---
 
-## Getting Started
+## 📱 App Overview
 
-1.  Clone the repository.
-2.  Get a free API key from [NewsAPI.org](https://newsapi.org/).
-3.  Create a `.env` file in the root directory and add:
-    ```env
-    API_KEY=your_api_key_here
+**Newsroom Live Wire** is more than just a news aggregator. It's a modern information hub that combines sleek aesthetics with powerful functionality. Whether you're tracking breaking news on your phone or deep-diving into articles on your desktop, the app adapts perfectly to your workflow.
+
+### Core Features
+- **Real-time Headlines**: Instant access to the latest stories worldwide via NewsAPI.
+- **Dynamic Categorization**: Filter news by Business, Technology, Science, Sports, Health, Entertainment, and more.
+- **Smart Search**: Find exactly what you're looking for with a robust global search engine.
+- **Offline Bookmarks**: Save essential articles to your local library using Hive's high-speed NoSQL storage.
+- **Interactive Detail View**: Read summaries and launch full articles in a single tap.
+- **Pull-to-Refresh**: Keep your finger on the pulse with effortless feed updates.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (Latest stable version)
+- A free API Key from [NewsAPI.org](https://newsapi.org/)
+
+### Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/MujahidAmin1/News-App.git
+    cd News-App
     ```
-4.  Run `flutter pub get`.
-5.  Run the app using `flutter run`.
+
+2.  **Configure Environment Variables:**
+    Create a `.env` file in the root directory:
+    ```env
+    API_KEY=your_news_api_key_here
+    ```
+
+3.  **Install Dependencies:**
+    ```bash
+    flutter pub get
+    ```
+
+4.  **Run the Application:**
+    ```bash
+    flutter run
+    ```
+
+---
+
+## 🖥️ Platform Adaptation & Support
+
+The app features a **Responsive Architecture** that ensures a premium experience regardless of the device.
+
+### Mobile, Tablet & Web
+- **Adaptive Layout**: Transitions between a Bottom Navigation Bar on mobile and a fixed Sidebar on tablets/web screens.
+- **Touch-Optimized**: High-performance scrolling and gesture-based navigation.
+
+
+### Desktop (Windows, macOS, Linux)
+- **Keyboard Shortcuts**: Power-user features like `Ctrl+1/2/3` for navigation and `Ctrl+R` to refresh.
+- **Native Experience**: Integrated system menu bars (native desktop only) and optimized multi-column layouts.
+- **Large Screen Optimization**: Content is intelligently spaced and organized to utilize available screen real estate.
+
+---
+
+## 🎨 Visual Experience
+
+### Screenshots
+| News Feed | Article Search | Bookmarks |
+| :---: | :---: | :---: |
+| [IMAGE_INDICATOR: mobile_feed_screenshot] | [IMAGE_INDICATOR: mobile_search_screenshot] | [IMAGE_INDICATOR: mobile_bookmarks_screenshot] |
+
+| Desktop Layout |
+| :---: |
+| [IMAGE_INDICATOR: desktop_layout_screenshot] |
+
+### 🎬 Video Demo
+[VIDEO_INDICATOR: app_walkthrough_demo]
+
+---
+
+## 🔗 Live Links & Downloads
+
+Experience the app across different platforms:
+
+- **🌐 Live Web Demo**: [LINK_INDICATOR: live_url]
+- **📱 Appetize (Virtual Mobile)**: [LINK_INDICATOR: appetize_link]
+- **☁️ Cloud Drive (Build Downloads)**: [LINK_INDICATOR: cloud_drive_link]
+
+---
+
+## 🛠️ Technology Stack
+
+- **State Management**: [Riverpod](https://riverpod.dev/) (AsyncNotifier, ProviderScope)
+- **Local Storage**: [Hive](https://docs.hivedb.dev/) (High-performance NoSQL for bookmarks)
+- **Networking**: [Dio](https://pub.dev/packages/dio) (Robust HTTP client)
+- **Architecture**: Feature-first structure (Articles, Search, Bookmarks, Nav)
+- **Responsive System**: Custom `LayoutBuilder` with tailored Desktop and Mobile implementations.
+
+---
+
