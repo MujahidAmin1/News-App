@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/layout/desktop_layout.dart';
-import 'package:news_app/layout/mobile_layout.dart';
+import 'package:news_app/features/layout/desktop_layout.dart';
+import 'package:news_app/features/layout/mobile_layout.dart';
 import 'package:news_app/utils/screen_sizes.dart';
 
 class ResponsiveScaffold extends StatelessWidget {

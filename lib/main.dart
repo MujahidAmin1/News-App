@@ -8,7 +8,11 @@ import 'package:news_app/hive_registrar.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    debugPrint("Warning: .env file not found. Falling back to environment variables.");
+  }
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(1)) {
     Hive.registerAdapter(SourceAdapter());

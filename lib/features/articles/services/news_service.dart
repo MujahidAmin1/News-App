@@ -10,8 +10,11 @@ import 'package:news_app/features/articles/model/article.dart';
 class NewsService {
   Dio dio = Dio();
 
+  String get _apiKey =>
+      dotenv.env['API_KEY'] ?? const String.fromEnvironment('API_KEY');
+
   Future<NewsResponse> getTopHeadlines() async {
-    var apiKey = dotenv.env['API_KEY'];
+    var apiKey = _apiKey;
     try {
       final response = await dio.get(
         'https://newsapi.org/v2/top-headlines',
@@ -36,7 +39,7 @@ class NewsService {
       queryParameters: {
         'country': 'us',
         'category': category,
-        'apiKey': dotenv.env['API_KEY'],
+        'apiKey': _apiKey,
       },
     );
 
@@ -49,7 +52,7 @@ class NewsService {
   }
 
   Future<NewsResponse> searchArticles(String query) async {
-    final apiKey = dotenv.env['API_KEY'];
+    final apiKey = _apiKey;
     try {
       final response = await dio.get(
         'https://newsapi.org/v2/everything',
