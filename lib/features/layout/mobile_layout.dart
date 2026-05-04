@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:news_app/features/articles/view/news_feed_content.dart';
+import 'package:news_app/features/articles/view/news_page_desktop.dart';
 import 'package:news_app/features/articles/view/news_detail_screen.dart';
 import 'package:news_app/features/bookmarks/view/bookmarks.dart';
-import 'package:news_app/features/btm_navbar/btm_navbar_ctrl.dart';
-import 'package:news_app/features/btm_navbar/widgets/underline_navigation_bar.dart';
+import 'package:news_app/features/nav_bar/navbar_ctrl.dart';
+import 'package:news_app/features/nav_bar/widgets/underline_navigation_bar.dart';
 import 'package:news_app/features/search/view/search_screen.dart';
 
 class MobileLayout extends ConsumerWidget {

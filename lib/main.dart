@@ -3,7 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:news_app/features/articles/model/source_adapter.dart';
-import 'package:news_app/features/btm_navbar/btm_navbar.dart';
+import 'package:news_app/features/nav_bar/navbar.dart';
 import 'package:news_app/hive_registrar.g.dart';
 
 void main() async {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFF0B0F16),
         useMaterial3: true,
       ),
-      home: BtmNavbar(),
+      home: Navbar(),
     );
   }
 }
