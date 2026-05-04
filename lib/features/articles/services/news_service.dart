@@ -8,9 +8,19 @@ import 'package:news_app/features/articles/model/article.dart';
 
 
 class NewsService {
-  Dio dio = Dio();
+  final Dio dio = Dio(
+    BaseOptions(
+      headers: {
+        'User-Agent': 'NewsroomLiveWire/1.0',
+      },
+    ),
+  );
 
-  String get _apiKey => const String.fromEnvironment('API_KEY');
+  String get _apiKey {
+    const fromEnv = String.fromEnvironment('API_KEY');
+    if (fromEnv.isNotEmpty) return fromEnv;
+    return dotenv.env['API_KEY'] ?? '';
+  }
 
   Future<NewsResponse> getTopHeadlines() async {
     var apiKey = _apiKey;

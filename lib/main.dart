@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:news_app/features/articles/model/source_adapter.dart';
@@ -7,6 +8,13 @@ import 'package:news_app/hive_registrar.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    // ignore if .env is missing (e.g. in CI where --dart-define is used)
+  }
 
   await Hive.initFlutter();
 
