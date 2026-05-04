@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:news_app/features/articles/model/article.dart';
-import 'package:news_app/features/articles/view/news_detail_screen.dart';
 import 'package:news_app/features/bookmarks/controller/bookmark_controller.dart';
 import 'package:news_app/features/search/controller/search_controller.dart';
 import 'package:news_app/features/search/widgets/search_result_card.dart';

@@ -9,11 +9,11 @@ import 'package:news_app/features/articles/widgets/article_grid_card.dart';
 import 'package:news_app/features/articles/widgets/featured_article_card.dart';
 import 'package:news_app/features/articles/widgets/news_category_nav_bar.dart';
 import 'package:news_app/features/articles/widgets/news_top_header.dart';
-import 'package:news_app/features/articles/widgets/sidebar.dart';
 import 'package:news_app/features/bookmarks/controller/bookmark_controller.dart';
 import 'package:news_app/utils/categories.dart';
 import 'package:news_app/utils/route_transitions.dart';
 import 'package:news_app/utils/screen_sizes.dart';
+import 'package:news_app/features/articles/widgets/news_feed_shimmer.dart';
 
 final selectedArticleProvider = StateProvider<Article?>((ref) => null);
 
@@ -202,21 +202,7 @@ class _LoadingState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 18),
-      children: [
-        if (!context.isDesktop && !context.isTablet) const NewsTopHeader(),
-        if (!context.isDesktop && !context.isTablet) const SizedBox(height: 12),
-        NewsCategoryNavBar(
-          categories: categories,
-          selectedCategory: selectedCategory,
-          onSelectCategory: (_) {},
-        ),
-        const SizedBox(height: 80),
-        const Center(child: CircularProgressIndicator()),
-      ],
-    );
+    return NewsFeedShimmer(selectedCategory: selectedCategory);
   }
 }
 
