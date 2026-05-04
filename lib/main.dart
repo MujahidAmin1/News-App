@@ -8,17 +8,9 @@ import 'package:news_app/hive_registrar.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  try {
-    // Try loading from assets folder first (bundled directory)
-    await dotenv.load(fileName: "assets/.env");
-  } catch (e) {
-    try {
-      // Fallback to root (for legacy local setups)
-      await dotenv.load(fileName: ".env");
-    } catch (e) {
-      debugPrint("Info: No .env file found. Using environment variables via --dart-define.");
-    }
-  }
+    
+  await dotenv.load(fileName: ".env");
+    
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(1)) {
     Hive.registerAdapter(SourceAdapter());
