@@ -36,13 +36,13 @@ A premium, high-performance news application built with Flutter that delivers re
     There are two ways to provide your API Key:
 
     **Option A: Using a `.env` file (Local Development)**
-    Create a `.env` file in the root directory:
+    Create a `.env` file in the `assets/` directory (this ensures it doesn't break CI builds):
     ```env
     API_KEY=your_news_api_key_here
     ```
 
     **Option B: Using `--dart-define` (Recommended for CI/CD)**
-    Pass the key directly during the build or run command:
+    Pass the key directly during the build or run command (no file needed):
     ```bash
     flutter run --dart-define=API_KEY=your_news_api_key_here
     ```
