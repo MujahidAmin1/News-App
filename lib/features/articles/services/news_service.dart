@@ -10,8 +10,7 @@ import 'package:news_app/features/articles/model/article.dart';
 class NewsService {
   Dio dio = Dio();
 
-  String get _apiKey =>
-      dotenv.env['API_KEY'] ?? const String.fromEnvironment('API_KEY');
+  String get _apiKey => const String.fromEnvironment('API_KEY');
 
   Future<NewsResponse> getTopHeadlines() async {
     var apiKey = _apiKey;
