@@ -1,77 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 import 'package:news_app/features/articles/controller/news_controller.dart';
 import 'package:news_app/features/articles/model/article.dart';
-import 'package:news_app/features/articles/view/news_detail_screen.dart';
 import 'package:news_app/features/articles/widgets/animated_news_item.dart';
 import 'package:news_app/features/articles/widgets/article_grid_card.dart';
 import 'package:news_app/features/articles/widgets/featured_article_card.dart';
 import 'package:news_app/features/articles/widgets/news_category_nav_bar.dart';
 import 'package:news_app/features/articles/widgets/news_top_header.dart';
-import 'package:news_app/features/articles/widgets/sidebar.dart';
 import 'package:news_app/features/bookmarks/controller/bookmark_controller.dart';
 import 'package:news_app/utils/categories.dart';
-import 'package:news_app/utils/route_transitions.dart';
 import 'package:news_app/utils/screen_sizes.dart';
 
-final selectedArticleProvider = StateProvider<Article?>((ref) => null);
+class NewsFeedContent extends ConsumerWidget {
+  const NewsFeedContent({super.key, required this.onArticleTap});
 
-class NewsPage extends ConsumerWidget {
-  const NewsPage({super.key});
+  final ValueChanged<Article> onArticleTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final newsState = ref.watch(newsControllerProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
-    final selectedArticle = ref.watch(selectedArticleProvider);
-    final isDesktop = context.isDesktop;
-    final isTablet = context.isTablet;
 
-    Widget mainContent = RefreshIndicator(
-      onRefresh: ref.read(newsControllerProvider.notifier).refresh,
-      child: newsState.when(
-        data: (newsResponse) => _NewsContent(
-          selectedCategory: selectedCategory,
-          newsResponse: newsResponse,
-          onSelectCategory: (category) => ref
-              .read(newsControllerProvider.notifier)
-              .changeCategory(category),
-        ),
-        loading: () => _LoadingState(selectedCategory: selectedCategory),
-        error: (error, _) => _ErrorState(
-          message: error.toString(),
-          onRetry: () => ref.invalidate(newsControllerProvider),
-        ),
-      ),
-    );
-
-    return Scaffold(
-      backgroundColor: const Color(0xFF0B0F16),
-      body: SafeArea(
-        child: Row(
-          children: [
-            Expanded(
-              flex: 5,
-              child: mainContent,
-            ),
-          ],
+    return SafeArea(
+      child: RefreshIndicator(
+        onRefresh: ref.read(newsControllerProvider.notifier).refresh,
+        child: newsState.when(
+          data: (newsResponse) => _FeedList(
+            selectedCategory: selectedCategory,
+            newsResponse: newsResponse,
+            onSelectCategory: (category) => ref
+                .read(newsControllerProvider.notifier)
+                .changeCategory(category),
+            onArticleTap: onArticleTap,
+          ),
+          loading: () => _LoadingState(selectedCategory: selectedCategory),
+          error: (error, _) => _ErrorState(
+            message: error.toString(),
+            onRetry: () => ref.invalidate(newsControllerProvider),
+          ),
         ),
       ),
     );
   }
 }
 
-class _NewsContent extends ConsumerWidget {
-  const _NewsContent({
+class _FeedList extends ConsumerWidget {
+  const _FeedList({
     required this.selectedCategory,
     required this.newsResponse,
     required this.onSelectCategory,
+    required this.onArticleTap,
   });
 
   final String selectedCategory;
   final NewsResponse newsResponse;
   final ValueChanged<String> onSelectCategory;
+  final ValueChanged<Article> onArticleTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -87,17 +71,6 @@ class _NewsContent extends ConsumerWidget {
     bool isBookmarked(Article article) {
       return bookmarked.any((a) => a.url == article.url || a.id == article.id) ||
           bookmarksCtrl.isBookmarked(article);
-    }
-
-    void handleArticleTap(Article article) {
-      if (isDesktop) {
-        ref.read(selectedArticleProvider.notifier).state = article;
-      } else {
-        Navigator.push(
-          context,
-          FadeSlidePageRoute(page: NewsDetailScreen(article: article)),
-        );
-      }
     }
 
     return CustomScrollView(
@@ -151,7 +124,7 @@ class _NewsContent extends ConsumerWidget {
                           bookmarksCtrl.addBookmark(featuredArticle);
                         }
                       },
-                      onOpen: () => handleArticleTap(featuredArticle),
+                      onOpen: () => onArticleTap(featuredArticle),
                     ),
                   ),
                 const SizedBox(height: 14),
@@ -159,14 +132,15 @@ class _NewsContent extends ConsumerWidget {
             ),
           ),
         ),
+        if (gridArticles.isNotEmpty)
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 14),
             sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 250,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 0.64,
+                childAspectRatio: isDesktop ? 0.8 : 0.64,
               ),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -183,7 +157,7 @@ class _NewsContent extends ConsumerWidget {
                           bookmarksCtrl.addBookmark(article);
                         }
                       },
-                      onOpen: () => handleArticleTap(article),
+                      onOpen: () => onArticleTap(article),
                     ),
                   );
                 },

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:news_app/features/articles/view/news_detail_screen.dart';
+import 'package:news_app/features/articles/model/article.dart';
 import 'package:news_app/features/bookmarks/controller/bookmark_controller.dart';
 import 'package:news_app/features/bookmarks/widgets/saved_article_card.dart';
 
 class Bookmarks extends ConsumerWidget {
-  const Bookmarks({super.key});
+  const Bookmarks({super.key, required this.onArticleTap});
+
+  final ValueChanged<Article> onArticleTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -97,11 +99,7 @@ class Bookmarks extends ConsumerWidget {
                           return SavedArticleCard(
                             article: article,
                             onRemove: () => bookmarksCtrl.removeBookmark(article),
-                            onOpen: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => NewsDetailScreen(article: article),
-                              ),
-                            ),
+                            onOpen: () => onArticleTap(article),
                           );
                         },
                       ),

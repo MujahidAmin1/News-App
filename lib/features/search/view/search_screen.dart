@@ -7,7 +7,9 @@ import 'package:news_app/features/search/controller/search_controller.dart';
 import 'package:news_app/features/search/widgets/search_result_card.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
-  const SearchScreen({super.key});
+  const SearchScreen({super.key, required this.onArticleTap});
+
+  final ValueChanged<Article> onArticleTap;
 
   @override
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
@@ -89,6 +91,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   data: (items) => _ResultsList(
                     query: submittedQuery,
                     articles: items,
+                    onArticleTap: widget.onArticleTap,
                   ),
                 ),
               ] else ...[
@@ -192,10 +195,12 @@ class _ResultsList extends ConsumerWidget {
   const _ResultsList({
     required this.query,
     required this.articles,
+    required this.onArticleTap,
   });
 
   final String query;
   final List<Article> articles;
+  final ValueChanged<Article> onArticleTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -238,11 +243,7 @@ class _ResultsList extends ConsumerWidget {
                       bookmarkCtrl.addBookmark(article);
                     }
                   },
-                  onOpen: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => NewsDetailScreen(article: article)),
-                    );
-                  },
+                  onOpen: () => onArticleTap(article),
                 );
               },
             ),

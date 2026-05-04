@@ -25,7 +25,7 @@ class _AnimatedNewsItemState extends State<AnimatedNewsItem>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 400),
     );
 
     _fadeAnimation = CurvedAnimation(
@@ -42,7 +42,7 @@ class _AnimatedNewsItemState extends State<AnimatedNewsItem>
     ));
 
     // Staggered effect: index * delay
-    Future.delayed(Duration(milliseconds: 600 * widget.index), () {
+    Future.delayed(Duration(milliseconds: 100 * widget.index), () {
       if (mounted) {
         _controller.forward();
       }
