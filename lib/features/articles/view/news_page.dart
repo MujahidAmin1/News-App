@@ -24,9 +24,7 @@ class NewsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final newsState = ref.watch(newsControllerProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
-    final selectedArticle = ref.watch(selectedArticleProvider);
-    final isDesktop = context.isDesktop;
-    final isTablet = context.isTablet;
+  
 
     Widget mainContent = RefreshIndicator(
       onRefresh: ref.read(newsControllerProvider.notifier).refresh,
