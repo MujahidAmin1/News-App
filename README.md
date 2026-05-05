@@ -78,16 +78,6 @@ The app features a **Responsive Architecture** that ensures a premium experience
 ## 🎨 Visual Experience
 
 ### Screenshots
-| News Feed | Article Search | Bookmarks |
-| :---: | :---: | :---: |
-| [IMAGE_INDICATOR: mobile_feed_screenshot] | [IMAGE_INDICATOR: mobile_search_screenshot] | [IMAGE_INDICATOR: mobile_bookmarks_screenshot] |
-
-| Desktop Layout |
-| :---: |
-| [IMAGE_INDICATOR: desktop_layout_screenshot] |
-
-### 🎬 Video Demo
-[VIDEO_INDICATOR: app_walkthrough_demo]
 
 ---
 
@@ -95,9 +85,8 @@ The app features a **Responsive Architecture** that ensures a premium experience
 
 Experience the app across different platforms:
 
-- **🌐 Live Web Demo**: [LINK_INDICATOR: live_url]
-- **📱 Appetize (Virtual Mobile)**: [LINK_INDICATOR: appetize_link]
-- **☁️ Cloud Drive (Build Downloads)**: [LINK_INDICATOR: cloud_drive_link]
+- **📱 Appetize (Virtual Mobile)**: [[LINK_INDICATOR: appetize_link](https://appetize.io/app/b_uhcfsnepjy26bazsrjcac46bdm)]
+- **☁️ Cloud Drive (Build Downloads)**: [[LINK_INDICATOR: cloud_drive_link](https://drive.google.com/file/d/1UPxp2o-KKprTsTHaJ4ID2YWOlEmFJA0c/view?usp=drive_link)]
 
 ---
 
